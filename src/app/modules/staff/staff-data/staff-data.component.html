@@ -1,0 +1,33 @@
+ <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+   <nz-form-item>
+     <nz-form-control nzErrorTip="Please input your username!">
+       <nz-input-group>
+         <input formControlName="age" nz-input placeholder="age" />
+       </nz-input-group>
+     </nz-form-control>
+   </nz-form-item>
+   <nz-form-item>
+     <nz-form-control nzErrorTip="Please input your Password!">
+       <nz-input-group>
+         <input formControlName="name" nz-input placeholder="name" />
+       </nz-input-group>
+     </nz-form-control>
+   </nz-form-item>
+   <nz-form-item>
+     <nz-form-control nzErrorTip="Please input your Password!">
+       <nz-input-group>
+         <input formControlName="address" nz-input placeholder="address" />
+       </nz-input-group>
+     </nz-form-control>
+   </nz-form-item>
+   <nz-form-item>
+     <nz-form-control>
+       <button type="submit" nz-button nzType="primary">save</button>
+     </nz-form-control>
+   </nz-form-item>
+   <nz-form-item>
+     <nz-form-control>
+       <button type="reset" nz-button nzType="primary">reset</button>
+     </nz-form-control>
+   </nz-form-item>
+ </form>

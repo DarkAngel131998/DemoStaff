@@ -1,0 +1,29 @@
+<button nz-button [nzType]="'primary'" (click)="showModal()">Add</button>
+<nz-table #basicTable [nzData]="listStaff">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.id }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.age}}</td>
+      <td>{{ data.address }}</td>
+      <td>
+        <button nz-button [nzType]="'primary'" (click)="showModal(data.id)">Edit</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button [nzType]="'primary'" nz-popconfirm nzPopconfirmTitle="Are you sure delete this field?"
+          nzOkText="ok" nzCancelText="cancel" (nzOnConfirm)="confirm(data.id)" (nzOnCancel)="cancel()">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <app-staff-data *ngIf="isVisible" [id]="id" (cusOnClose)=" handleCancel()"></app-staff-data>
+</nz-modal>
