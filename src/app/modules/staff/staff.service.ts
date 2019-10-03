@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { ViewStaff } from './viewStaff';
-import { RequestModel } from './requestModel';
+import { ViewStaff } from './interfaces/viewStaff';
+import { RequestModel } from './interfaces/requestModel';
 
 const httpOptions = {
   headers: new HttpHeaders({

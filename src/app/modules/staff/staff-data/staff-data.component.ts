@@ -3,9 +3,9 @@ import { StaffService } from '../staff.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { format } from 'url';
-import { Role } from '../role';
+import { Role } from '../interfaces/role';
 import { stringify } from '@angular/compiler/src/util';
-import { ViewStaff } from '../viewStaff';
+import { ViewStaff } from '../interfaces/viewStaff';
 
 @Component({
 

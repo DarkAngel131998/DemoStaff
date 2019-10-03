@@ -4,8 +4,8 @@ import { StaffService } from './staff.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ViewStaff } from './viewStaff';
-import { RequestModel } from './requestModel';
+import { ViewStaff } from './interfaces/viewStaff';
+import { RequestModel } from './interfaces/requestModel';
 
 @Component({
   selector: 'app-staff',
