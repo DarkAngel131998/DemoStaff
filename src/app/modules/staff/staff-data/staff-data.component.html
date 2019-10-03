@@ -1,33 +1,50 @@
- <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+ <form nz-form *ngIf="validateForm" [formGroup]="validateForm" (ngSubmit)="submitForm()">
    <nz-form-item>
-     <nz-form-control nzErrorTip="Please input your username!">
-       <nz-input-group>
-         <input formControlName="age" nz-input placeholder="age" />
-       </nz-input-group>
+     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your Name">
+       <input nz-input formControlName="name" placeholder="name" id="name" />
      </nz-form-control>
    </nz-form-item>
    <nz-form-item>
-     <nz-form-control nzErrorTip="Please input your Password!">
-       <nz-input-group>
-         <input formControlName="name" nz-input placeholder="name" />
-       </nz-input-group>
+     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="age" nzRequired>Age</nz-form-label>
+     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your Age">
+       <nz-input-number [nzMin]="1" [nzMax]="150" formControlName="age" id="age" placeholder="age" nz-input>
+       </nz-input-number>
      </nz-form-control>
    </nz-form-item>
    <nz-form-item>
-     <nz-form-control nzErrorTip="Please input your Password!">
-       <nz-input-group>
-         <input formControlName="address" nz-input placeholder="address" />
-       </nz-input-group>
+     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired>Email</nz-form-label>
+     <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorEmail">
+       <input nz-input id="email" formControlName="email" placeholder="email" />
+       <ng-template #errorEmail let-control>
+         <ng-container *ngIf="control.hasError('required')">
+           Please confirm your required!
+         </ng-container>
+         <ng-container *ngIf="control.hasError('email')">
+           Please confirm your email!
+         </ng-container>
+       </ng-template>
      </nz-form-control>
    </nz-form-item>
    <nz-form-item>
-     <nz-form-control>
-       <button type="submit" nz-button nzType="primary">save</button>
+     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address" nzRequired>Address</nz-form-label>
+     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your address">
+       <input nz-input id="address" formControlName="address" placeholder="address" />
      </nz-form-control>
    </nz-form-item>
    <nz-form-item>
-     <nz-form-control>
-       <button type="reset" nz-button nzType="primary">reset</button>
+     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="role" nzRequired>Role</nz-form-label>
+     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please select your role">
+       <nz-select id="role" formControlName="roleId" nzPlaceHolder="Select your role">
+         <nz-option *ngFor="let option of roleList" [nzValue]="option.id" [nzLabel]="option.name"></nz-option>
+       </nz-select>
+     </nz-form-control>
+   </nz-form-item>
+   <nz-form-item>
+     <nz-form-control [nzOffset]="6" [nzSpan]="12">
+       <button nz-button type="submit" style="margin-right: 10px;" nzType="primary"
+         [disabled]="!validateForm.valid">Submit</button>
+       <button nz-button (click)="resetForm($event)">Reset</button>
      </nz-form-control>
    </nz-form-item>
  </form>

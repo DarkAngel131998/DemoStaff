@@ -2,17 +2,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { StaffService } from '../staff.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Staff } from '../staff';
 import { format } from 'url';
+import { Role } from '../role';
+import { stringify } from '@angular/compiler/src/util';
+import { ViewStaff } from '../viewStaff';
 
 @Component({
+
   selector: 'app-staff-data',
   templateUrl: './staff-data.component.html',
   styleUrls: ['./staff-data.component.scss']
 })
 export class StaffDataComponent implements OnInit {
   validateForm: FormGroup;
-  staff: Staff;
+  viewstaff: ViewStaff;
+  roleList: Role[] = [];
   @Input() id: number;
   @Output() cusOnClose = new EventEmitter<any>();
 
@@ -24,20 +28,35 @@ export class StaffDataComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.roleList = await this.staffService.getroleAPI().toPromise();
     this.validateForm = this.fb.group({
       id: Number,
       age: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      address: [null]
+      address: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      roleId: [null, [Validators.required]],
+      roleName: [null],
     });
     if (!this.id) {
       this.id = +this.route.snapshot.params.id;
     }
     if (this.id) {
-      const staff: Staff = await this.staffService.getAPIWithId(this.id).toPromise();
-      if (staff) {
-        this.validateForm.setValue(staff);
+      const viewstaff: ViewStaff = await this.staffService.getAPIWithId(this.id).toPromise();
+      if (viewstaff) {
+        this.validateForm.setValue(viewstaff);
+
       }
+    }
+  }
+
+  resetForm(e: MouseEvent) {
+    e.preventDefault();
+    this.validateForm.reset();
+    // tslint:disable-next-line: forin
+    for (const key in this.validateForm.controls) {
+      this.validateForm.controls[key].markAsPristine();
+      this.validateForm.controls[key].updateValueAndValidity();
     }
   }
 
@@ -50,12 +69,12 @@ export class StaffDataComponent implements OnInit {
     if (this.validateForm.invalid) { return; }
     const formData = this.validateForm.value;
     formData.age = +formData.age;
-    this.staff = formData;
+    formData.roleId = +formData.roleId;
+    this.viewstaff = formData;
     if (this.id) {
-      await this.staffService.putAPI(this.id, this.staff).toPromise();
+      await this.staffService.putAPI(this.id, this.viewstaff).toPromise();
     } else {
-      await this.staffService.postAPI(formData as Staff).toPromise();
-      // this.staffService.addData(formData as Staff);
+      await this.staffService.postAPI(formData as ViewStaff).toPromise();
     }
     this.cusOnClose.emit(true);
     // this.router.navigate(['/staff']);

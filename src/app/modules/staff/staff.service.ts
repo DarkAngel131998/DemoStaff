@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Staff } from './staff';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ViewStaff } from './viewStaff';
+import { RequestModel } from './requestModel';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,20 +19,9 @@ export interface QueryModel {
 })
 export class StaffService {
 
-  staffs: Staff[] = [
-    {
-      id: 1,
-      name: 'Cam',
-      address: 'HN',
-      age: 20
-    },
-    {
-      id: 2,
-      name: 'Duy',
-      address: 'HN',
-      age: 21
-    },
-  ];
+
+  viewStaff: ViewStaff[];
+
 
   constructor(
     private http: HttpClient
@@ -58,22 +48,25 @@ export class StaffService {
 
   // }
 
-  getAPI(params: QueryModel) {
-    return this.http.get<Staff[]>(`https://localhost:5001/api/Staffs`, { params: params as any });
+  getAPI(params: RequestModel) {
+    return this.http.get<any>(`https://localhost:5001/api/Staffs`, { params: params as any });
+  }
+  getroleAPI() {
+    return this.http.get<any>('https://localhost:5001/api/Roles');
   }
 
   getAPIWithId(id: number) {
-    return this.http.get<Staff>(`https://localhost:5001/api/Staff/${id}`);
+    return this.http.get<ViewStaff>(`https://localhost:5001/api/Staffs/${id}`);
   }
 
-  postAPI(staff: Staff) {
-    return this.http.post<Staff>('https://localhost:5001/api/Staff', staff, httpOptions);
+  postAPI(viewstaff: ViewStaff) {
+    return this.http.post<ViewStaff>('https://localhost:5001/api/Staffs', viewstaff, httpOptions);
   }
 
   delete(id: number) {
-    return this.http.delete(`https://localhost:5001/api/Staff/${id}`);
+    return this.http.delete(`https://localhost:5001/api/Staffs/${id}`);
   }
-  putAPI(id: number, staff: Staff) {
-    return this.http.put(`https://localhost:5001/api/Staff/${id}`, staff, httpOptions);
+  putAPI(id: number, viewstaff: ViewStaff) {
+    return this.http.put(`https://localhost:5001/api/Staffs/${id}`, viewstaff, httpOptions);
   }
 }

@@ -1,20 +1,36 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()">Add</button>
-<nz-table #basicTable [nzData]="listStaff">
+<div nz-row nzType="flex" style="margin-bottom: 20px;">
+  <div nz-col nzSpan="12"><button nz-button (click)="showModal()" nzType="primary">Add Staff</button></div>
+  <div nz-col nzSpan="12">
+    <nz-input-group nzSearch [nzAddOnAfter]="search">
+      <input [(ngModel)]="searchText" (keyup.enter)="getStaffs()" type="text" nz-input
+        placeholder="Nhập tên, dịa chỉ hoặc email" />
+    </nz-input-group>
+    <ng-template #search>
+      <button nz-button nzType="primary" nzSearch (click)="getStaffs()"><i nz-icon nzType="search"></i></button>
+    </ng-template>
+  </div>
+</div>
+
+<nz-table #ajaxTable nzShowSizeChanger [nzFrontPagination]="false" [nzData]="listOfData" [nzLoading]="loading"
+  [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getStaffs()"
+  (nzPageSizeChange)="getStaffs(true)">
   <thead>
     <tr>
-      <th>ID</th>
       <th>Name</th>
       <th>Age</th>
+      <th>Email</th>
       <th>Address</th>
-      <th>Action</th>
+      <th>Role</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{ data.id }}</td>
-      <td>{{ data.name }}</td>
+    <tr *ngFor="let data of ajaxTable.data">
+      <td>{{ data.name}}</td>
       <td>{{ data.age}}</td>
+      <td>{{ data.email }}</td>
       <td>{{ data.address }}</td>
+      <td>{{ data.roleName }}</td>
       <td>
         <button nz-button [nzType]="'primary'" (click)="showModal(data.id)">Edit</button>
         <nz-divider nzType="vertical"></nz-divider>
@@ -24,6 +40,8 @@
     </tr>
   </tbody>
 </nz-table>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="title" [nzFooter]="null" (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()">
   <app-staff-data *ngIf="isVisible" [id]="id" (cusOnClose)=" handleCancel()"></app-staff-data>
 </nz-modal>

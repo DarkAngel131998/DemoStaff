@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { StaffService } from './staff.service';
-import { Staff } from './staff';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ViewStaff } from './viewStaff';
+import { RequestModel } from './requestModel';
 
 @Component({
   selector: 'app-staff',
@@ -14,7 +16,18 @@ export class StaffComponent implements OnInit {
   isVisible = false;
   id: number;
   nzMessageService: any;
-  listStaff: Staff[] = [];
+  listOfData: ViewStaff[] = [];
+
+  title = '';
+  pageIndex = 1;
+  pageSize = 10;
+  total = 1;
+  loading = false;
+  searchText = '';
+  log() {
+    console.log(this.searchText);
+  }
+
   constructor(
     public staffService: StaffService,
     private fb: FormBuilder,
@@ -36,6 +49,11 @@ export class StaffComponent implements OnInit {
   }
 
   showModal(id: number = null): void {
+    if (id == null) {
+      this.title = 'Add new Staff';
+    } else {
+      this.title = 'Edit Staff';
+    }
     this.id = id;
     this.isVisible = true;
 
@@ -47,16 +65,22 @@ export class StaffComponent implements OnInit {
     this.id = null;
   }
 
-  getStaffs() {
-    this.staffService.getAPI().subscribe(x => {
-      this.listStaff = x;
+  getStaffs(reset: boolean = false) {
+    if (reset) {
+      this.pageIndex = 1;
+    }
+    this.loading = true;
+    // tslint:disable-next-line: max-line-length
+    this.staffService.getAPI({ index: this.pageIndex, size: this.pageSize, searchText: this.searchText }).subscribe(x => {
+      this.loading = false;
+      // console.log('getStaffs', x);
+      this.listOfData = x.data;
+      this.total = x.paging.count;
     });
   }
 
   handleCancel(): void {
     this.getStaffs();
-    // this.listStaff = this.staffService.staffs;
-    console.log('Button cancel clicked!');
     this.isVisible = false;
     this.id = null;
   }
